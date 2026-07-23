@@ -12,6 +12,10 @@ import care2 from "../care2.jpg"
 import care3 from "../care3.jpg"
 import care4 from "../care4.jpg"
 import forest from "../forest.jpg"
+import user1 from "../user1.jpg"
+import user2 from "../user2.jpg"
+import user3 from "../user3.jpg"
+import user4 from "../user4.jpg"
 
 export const categories = [
   {
@@ -161,3 +165,47 @@ export const ctaData = {
   button: "Avail Now",
   image: forest,
 };
+export const testimonials = [
+  {
+    id: 1,
+    name: "Jeanice Ford",
+    image: user1,
+    review:
+      "Suspendisse, occaecat exercitation est occaecati natoque sociis omnis..."
+  },
+  {
+    id: 2,
+    name: "Katty Pierce",
+    image: user2,
+    review:
+      "Habitant urna fugiat wisi inceptos sodales magna..."
+  },
+  {
+    id: 3,
+    name: "Pedro Lima",
+    image: user3,
+    review:
+      "Habitant urna fugiat wisi inceptos sodales magna..."
+  },
+  {
+    id: 4,
+    name: "Laura Kyle",
+    image: user4,
+    review:
+      "Suspendisse, occaecat exercitation est occaecati natoque sociis omnis..."
+  },
+];
+export const contactInfo = [
+  {
+    title: "Address",
+    value: "123 Fifth Avenue, USA",
+  },
+  {
+    title: "Call Us",
+    value: "123-456-7890",
+  },
+  {
+    title: "Email Us",
+    value: "info@example.com",
+  },
+];
