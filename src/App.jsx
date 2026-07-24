@@ -8,6 +8,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProductDetails from "./components/productDetails";
+import Layout from "./pages/Layout"
+import Shop from "./pages/Shop";
 
 function App() {
   return (
@@ -22,7 +24,11 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/dashboard/product/:id" element={<ProductDetails />} />
+      <Route element={<Layout />}>
+        <Route path="/dashboard/shop" element={<Shop />} />
+      </Route>
     </Routes>
+
     </>
   );
 }

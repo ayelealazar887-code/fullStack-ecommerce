@@ -1,10 +1,33 @@
 import React from "react";
 import Navbar from "./Navbar";
 import p1 from "../assets/p1.jpg"
+import { useLocation } from "react-router-dom";
+import flower from '../assets/flower.jpg'
 
 function Hero() {
+
+  const location = useLocation()
+  const isDashboard = location.pathname.startsWith("/dashboard/shop")
   return (
     <section className="relative min-h-screen overflow-hidden">
+      {
+       isDashboard ? (
+        <div className="relative h-[450px]">
+                <img
+                  src={flower}
+                  alt="Hero"
+                  className="w-full h-full object-cover"
+                />
+        
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                  <h1 className="text-6xl font-bold text-white tracking-wider">
+                    Plan a Plant
+                  </h1>
+                </div>
+              </div>
+       )
+       : (
+        <>
       <img
         src={p1}
         alt="Indoor plants arranged beautifully"
@@ -30,7 +53,7 @@ function Hero() {
             </div>
           </div>
         </div>
-      </div>
+      </div></>)}
     </section>
   );
 }

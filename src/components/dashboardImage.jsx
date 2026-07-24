@@ -1,120 +1,205 @@
 import React from "react";
 import flower from "../assets/flower.jpg";
-import { Heart, PlaneTakeoff, Star } from "lucide-react";
-import { featuredProducts } from "../assets/data/data";
+import { categories, featuredProducts } from "../assets/data/data";
+import flow from "../assets/flow.jpg";
+import air from "../assets/air.jpg";
+import indoor from "../assets/indoor-plant.jpg";
+import care3 from "../assets/care3.jpg";
+import care4 from "../assets/care4.jpg";
+import Hotsale from "./Hotsale";
+import Footer from "./Footer";
 import { Link } from "react-router-dom";
+
 function DashboardImage() {
   return (
-    <>
-      {/* Hero Section */}
-      <section
-        className="relative flex h-screen items-center justify-center bg-cover bg-center"
-        style={{ backgroundImage: `url(${flower})` }}
-      >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/40"></div>
+    <div className="bg-[#F8F8F5]">
 
-        {/* Hero Content */}
-        <div className="relative z-10 mx-auto max-w-3xl px-6 text-center text-white">
-          <span className="rounded-full bg-white/20 px-4 py-2 text-sm font-medium backdrop-blur-md">
-            Nature
-          </span>
+      {/* Hero */}
+      <div className="relative h-[450px]">
+        <img
+          src={flower}
+          alt="Hero"
+          className="w-full h-full object-cover"
+        />
 
-          <h1 className="mt-6 text-5xl font-bold leading-tight md:text-7xl">
-            Reimagined <br />
-            Indoors
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+          <h1 className="text-6xl font-bold text-white tracking-wider">
+            Plan a Plant
           </h1>
+        </div>
+      </div>
 
-          <p className="mt-6 text-lg text-white/90">
-            Discover beautiful indoor plants that transform your home into a
-            relaxing, natural space.
-          </p>
+      {/* Categories */}
+      <section className="max-w-7xl mx-auto py-12 px-5">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-3xl font-semibold">Categories</h2>
+          <button className="text-green-700">See All →</button>
+        </div>
 
-          <div className="mt-8 flex justify-center gap-4">
-            <button className="rounded-full bg-emerald-600 px-8 py-3 font-semibold transition hover:bg-emerald-700">
-              Shop Bestsellers
-            </button>
+        <div className="flex justify-between gap-6 overflow-x-auto">
+          {categories.map((item) => (
+            <div
+              key={item.id}
+              className="flex flex-col items-center min-w-[120px]"
+            >
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-28 h-28 rounded-full object-cover shadow-md"
+              />
 
-            <button className="rounded-full border border-white px-8 py-3 font-semibold transition hover:bg-white hover:text-slate-900">
-              Care Guides
-            </button>
-          </div>
+              <h3 className="mt-3 uppercase text-sm tracking-wider">
+                {item.name}
+              </h3>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Featured Products */}
-      <section className="bg-slate-50 py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <h2 className="mb-10 text-center text-4xl font-bold text-slate-800">
-            Featured Plants
-          </h2>
+      {/* Best Selling */}
+      <section className="max-w-7xl mx-auto py-12 px-5">
+        
+        <h2 className="text-4xl font-semibold text-center mb-10">
+          Best Selling
+        </h2>
 
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-            {featuredProducts.map((f) => (
-              <Link
-                key={f.id}
-                to={`/dashboard/product/${f.id}`}
-                className="block overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-xl"
-              >
-                <div
-                  key={f.id}
-                  className="overflow-hidden rounded-2xl bg-white shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-2xl"
-                >
-                  <div className="relative">
-                    {f.sale && (
-                      <span className="absolute left-3 top-3 rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white">
-                        Sale!
-                      </span>
-                    )}
+        <div className="grid md:grid-cols-3 gap-8">
 
-                    <button className="absolute right-3 top-3 rounded-full bg-white p-2 shadow">
-                      <Heart size={18} />
-                    </button>
+          {[
+            {
+              image: indoor,
+              title: "INDOOR PLANTS",
+            },
+            {
+              image: air,
+              title: "AIR PURIFYING PLANTS",
+            },
+            {
+              image: flow,
+              title: "FLOWERING PLANTS",
+            },
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-xl shadow-lg overflow-hidden"
+            >
+              <div className="relative h-72">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover"
+                />
 
-                    <img
-                      src={f.image}
-                      alt={f.name}
-                      className="h-64 w-full object-cover"
-                    />
-                  </div>
-
-                  <div className="p-5">
-                    <h3 className="text-lg font-semibold text-slate-800">
-                      {f.name}
-                    </h3>
-
-                    <div className="mt-3 flex items-center justify-between">
-                      <div className="flex gap-1 text-amber-500">
-                        {Array.from({ length: f.rating }).map((_, index) => (
-                          <Star key={index} size={16} fill="currentColor" />
-                        ))}
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        {f.oldPrice && (
-                          <span className="text-sm text-slate-400 line-through">
-                            ${f.oldPrice.toFixed(2)}
-                          </span>
-                        )}
-
-                        <span className="font-semibold text-emerald-700">
-                          ${f.price.toFixed(2)}
-                        </span>
-                      </div>
-                    </div>
-
-                    <button className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 font-semibold text-white transition hover:bg-emerald-700">
-                      <PlaneTakeoff size={18} />
-                      Add to Cart
-                    </button>
-                  </div>
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                  <h2 className="text-3xl text-white font-bold text-center">
+                    {item.title}
+                  </h2>
                 </div>
-              </Link>
-            ))}
-          </div>
+              </div>
+
+              <Link to='/dashboard/shop'><button className="w-full bg-green-700 hover:bg-green-800 text-white py-3 font-semibold">
+                Shop Now
+              </button></Link>
+            </div>
+          ))}
         </div>
       </section>
-    </>
+
+      {/* Trending Plants */}
+      <section className="max-w-7xl mx-auto py-12 px-5">
+        <h2 className="text-4xl font-semibold text-center mb-10">
+          Trending Plants
+        </h2>
+
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {featuredProducts.map((item) => (
+            <div
+              key={item.id}
+              className="bg-white rounded-lg shadow hover:shadow-xl transition"
+            >
+              <img
+                src={item.image}
+                alt={item.name}
+                className="h-56 w-full object-cover rounded-t-lg"
+              />
+
+              <div className="p-4">
+                <h3 className="font-semibold">
+                  {item.name}
+                </h3>
+
+                <p className="text-gray-600 my-2">
+                  ${item.price}
+                </p>
+
+                <button className="w-full bg-green-700 text-white py-2 rounded hover:bg-green-800">
+                  Buy
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Blogs */}
+      <section className="max-w-7xl mx-auto py-12 px-5">
+        <h2 className="text-4xl font-semibold text-center mb-10">
+          Blogs
+        </h2>
+
+        <div className="grid md:grid-cols-2 gap-8">
+
+          <div className="relative rounded-xl overflow-hidden">
+            <img
+              src={care3}
+              alt=""
+              className="h-72 w-full object-cover"
+            />
+
+            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white">
+              <h3 className="text-2xl text-center font-semibold">
+                8 Best
+                <br />
+                Low Maintenance Plants
+                <br />
+                for a Busy Home
+              </h3>
+
+              <button className="mt-5 bg-green-700 px-6 py-2 rounded">
+                Read
+              </button>
+            </div>
+          </div>
+
+          <div className="relative rounded-xl overflow-hidden">
+            <img
+              src={care4}
+              alt=""
+              className="h-72 w-full object-cover"
+            />
+
+            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white">
+              <h3 className="text-2xl text-center font-semibold">
+                Air Purifying Plants
+                <br />
+                You Should Take Home
+                <br />
+                Today
+              </h3>
+
+              <button className="mt-5 bg-green-700 px-6 py-2 rounded">
+                Read
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <Hotsale />
+
+      <Footer />
+    </div>
   );
 }
 
