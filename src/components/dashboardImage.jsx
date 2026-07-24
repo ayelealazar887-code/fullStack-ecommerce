@@ -53,7 +53,7 @@ function DashboardImage() {
             {featuredProducts.map((f) => (
               <Link
                 key={f.id}
-                to={`/product/${f.id}`}
+                to={`/dashboard/product/${f.id}`}
                 className="block overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-xl"
               >
                 <div
