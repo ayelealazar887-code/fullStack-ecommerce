@@ -14,7 +14,6 @@ function Hero() {
       <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/40 to-black/20" />
 
       <div className="relative z-10 flex min-h-screen flex-col">
-        <Navbar />
 
         <div className="flex flex-1 items-center px-4 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl w-full">
