@@ -6,15 +6,13 @@ function Navbar() {
   const [openMobile, setMobile] = useState(false);
 
   const links = [
-    { name: "Home", path: "/" },
-    { name: "Shop Now", path: "/shop" },
     { name: "About Us", path: "/about" },
     { name: "Reviews", path: "/testimonials" },
     { name: "Contact Us", path: "/contact" },
   ];
 
   return (
-    <nav className="w-full px-4 py-4 sm:px-6 lg:px-8">
+    <nav className="sticky top-0 z-50 bg-emerald-700">
       <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-white/20 bg-white/10 px-4 py-3 shadow-lg shadow-black/10 backdrop-blur-md sm:px-6">
         <Link
           to="/"
@@ -35,10 +33,10 @@ function Navbar() {
           ))}
 
           <Link
-            to="/cart"
-            className="rounded-full bg-white p-2 text-emerald-700 transition hover:bg-emerald-50"
+            to="/login"
+            className="rounded-full text-shadow-black bg-white p-2 text-emerald-700 transition hover:bg-emerald-50"
           >
-            <ShoppingBag size={18} />
+            Shop Now
           </Link>
         </div>
 

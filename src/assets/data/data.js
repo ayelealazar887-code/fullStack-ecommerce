@@ -85,6 +85,8 @@ export const featuredProducts = [
     oldPrice: 120.0,
     rating: 5,
     sale: false,
+    description:
+      "A beautiful miniature lemon tree that brings elegance and freshness to any indoor space. With proper sunlight and regular watering, it can even produce fragrant blossoms and small lemons.",
   },
   {
     id: 2,
@@ -94,6 +96,8 @@ export const featuredProducts = [
     oldPrice: null,
     rating: 3,
     sale: true,
+    description:
+      "Known for its glossy, deep-green leaves, the Rubber Plant is an easy-care houseplant that adds a modern touch to homes and offices while helping improve indoor air quality.",
   },
   {
     id: 3,
@@ -103,6 +107,8 @@ export const featuredProducts = [
     oldPrice: null,
     rating: 5,
     sale: false,
+    description:
+      "A compact succulent with thick, water-storing leaves that requires very little maintenance. Perfect for desks, shelves, and sunny windowsills.",
   },
   {
     id: 4,
@@ -112,6 +118,8 @@ export const featuredProducts = [
     oldPrice: null,
     rating: 5,
     sale: false,
+    description:
+      "A charming cactus covered with soft white spines that create a fluffy appearance. This drought-tolerant plant thrives in bright sunlight and makes a unique decorative piece.",
   },
   {
     id: 5,
@@ -121,6 +129,8 @@ export const featuredProducts = [
     oldPrice: 40.0,
     rating: 4,
     sale: true,
+    description:
+      "One of the easiest indoor plants to grow, the Snake Plant tolerates low light and infrequent watering. Its upright leaves add style while naturally purifying the air.",
   },
   {
     id: 6,
@@ -130,6 +140,8 @@ export const featuredProducts = [
     oldPrice: null,
     rating: 5,
     sale: false,
+    description:
+      "Featuring elegant white blooms and lush green foliage, the Peace Lily is perfect for creating a calm atmosphere. It prefers indirect light and rewards proper care with long-lasting flowers.",
   },
 ];
 export const aboutData = {
