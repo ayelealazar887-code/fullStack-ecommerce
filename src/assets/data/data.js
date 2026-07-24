@@ -16,6 +16,8 @@ import user1 from "../user1.jpg"
 import user2 from "../user2.jpg"
 import user3 from "../user3.jpg"
 import user4 from "../user4.jpg"
+import p2 from "../p2.jpg"
+import p3 from "../p3.jpg"
 
 export const categories = [
   {
@@ -140,6 +142,26 @@ export const featuredProducts = [
     oldPrice: null,
     rating: 5,
     sale: false,
+    description:
+      "Featuring elegant white blooms and lush green foliage, the Peace Lily is perfect for creating a calm atmosphere. It prefers indirect light and rewards proper care with long-lasting flowers.",
+  },{
+     id: 7,
+    name: "oeace Lily",
+    image: p2,
+    price: 30.0,
+    oldPrice: null,
+    rating: 5,
+    sale: true,
+    description:
+      "Featuring elegant white blooms and lush green foliage, the Peace Lily is perfect for creating a calm atmosphere. It prefers indirect light and rewards proper care with long-lasting flowers.",
+  },{
+     id: 8,
+    name: "Pdef oily",
+    image: p3,
+    price: 30.0,
+    oldPrice: null,
+    rating: 5,
+    sale: true,
     description:
       "Featuring elegant white blooms and lush green foliage, the Peace Lily is perfect for creating a calm atmosphere. It prefers indirect light and rewards proper care with long-lasting flowers.",
   },

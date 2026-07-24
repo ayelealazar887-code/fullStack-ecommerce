@@ -8,8 +8,10 @@ function Hero() {
 
   const location = useLocation()
   const isDashboard = location.pathname.startsWith("/dashboard/shop")
+
+  const pageName = location.pathname.split("/").pop();
   return (
-    <section className="relative min-h-screen overflow-hidden">
+    <section className="relative h-[60vh] overflow-hidden">
       {
        isDashboard ? (
         <div className="relative h-[450px]">
@@ -21,7 +23,9 @@ function Hero() {
         
                 <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                   <h1 className="text-6xl font-bold text-white tracking-wider">
-                    Plan a Plant
+                    {
+                      pageName ? pageName : "Plan Plant"
+                    }
                   </h1>
                 </div>
               </div>

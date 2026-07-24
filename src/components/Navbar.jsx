@@ -1,30 +1,41 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, ShoppingBag, User, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, Search, ShoppingBag, User, X } from "lucide-react";
 
 function Navbar() {
   const [openMobile, setMobile] = useState(false);
-  const location = useLocation();
+  const [search, setSearch] = useState("");
 
-const isDashboard = location.pathname.startsWith("/dashboard");
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isDashboard = location.pathname.startsWith("/dashboard");
 
   const landingLinks = [
     { name: "About Us", path: "/about" },
     { name: "Reviews", path: "/testimonials" },
     { name: "Contact Us", path: "/contact" },
+    { name: "Dashboard", path: "/dashboard" },
   ];
 
   const dashboardLinks = [
     { name: "Home", path: "/dashboard" },
-    { name: "Shop Plants", path: "/shop" },
-    { name: "Care Tips", path: "/care-tips" },
+    { name: "Shop Plants", path: "/dashboard/shop" },
+    { name: "Care Tips", path: "/dashboard/care-tips" },
   ];
 
   const links = isDashboard ? dashboardLinks : landingLinks;
 
+  const handleSearch = () => {
+    if (!search.trim()) return;
+
+    navigate(`/dashboard/shop?search=${encodeURIComponent(search)}`);
+    setMobile(false);
+  };
+
   return (
-    <nav className="fixed top-0 left-0 z-50 w-full bg-emerald-700 shadow-lg">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-emerald-900/20 backdrop-blur-xl border-b border-white/10 shadow-lg">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link
           to={isDashboard ? "/dashboard" : "/"}
@@ -47,13 +58,36 @@ const isDashboard = location.pathname.startsWith("/dashboard");
 
           {isDashboard ? (
             <>
+              {/* Search */}
+              <div className="flex items-center overflow-hidden rounded-full bg-white">
+                <input
+                  type="text"
+                  placeholder="Search plants..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" && handleSearch()
+                  }
+                  className="w-56 px-4 py-2 text-sm text-gray-700 outline-none"
+                />
+
+                <button
+                  onClick={handleSearch}
+                  className="bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700"
+                >
+                  <Search size={18} />
+                </button>
+              </div>
+
+              {/* Cart */}
               <Link
-                to="/cart"
+                to="/dashboard/cart"
                 className="rounded-full bg-white p-2 text-emerald-700 transition hover:bg-emerald-100"
               >
                 <ShoppingBag size={18} />
               </Link>
 
+              {/* Profile */}
               <Link
                 to="/profile"
                 className="rounded-full bg-white p-2 text-emerald-700 transition hover:bg-emerald-100"
@@ -71,7 +105,7 @@ const isDashboard = location.pathname.startsWith("/dashboard");
           )}
         </div>
 
-        {/* Mobile Button */}
+        {/* Mobile Menu Button */}
         <button
           onClick={() => setMobile((prev) => !prev)}
           className="rounded-full border border-white/20 bg-white/10 p-2 text-white md:hidden"
@@ -96,10 +130,31 @@ const isDashboard = location.pathname.startsWith("/dashboard");
 
           {isDashboard ? (
             <>
+              {/* Mobile Search */}
+              <div className="mt-3 flex items-center overflow-hidden rounded-full border border-gray-300">
+                <input
+                  type="text"
+                  placeholder="Search plants..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" && handleSearch()
+                  }
+                  className="flex-1 px-4 py-2 text-sm outline-none"
+                />
+
+                <button
+                  onClick={handleSearch}
+                  className="bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700"
+                >
+                  <Search size={18} />
+                </button>
+              </div>
+
               <Link
-                to="/cart"
+                to="/dashboard/cart"
                 onClick={() => setMobile(false)}
-                className="mt-2 flex items-center gap-2 rounded-lg px-3 py-3 text-slate-700 transition hover:bg-emerald-50"
+                className="mt-3 flex items-center gap-2 rounded-lg px-3 py-3 text-slate-700 transition hover:bg-emerald-50"
               >
                 <ShoppingBag size={18} />
                 Cart

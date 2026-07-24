@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import ProductDetails from "./components/productDetails";
 import Layout from "./pages/Layout"
 import Shop from "./pages/Shop";
+import Cart from "./pages/Cart";
 
 function App() {
   return (
@@ -23,9 +24,11 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/dashboard/product/:id" element={<ProductDetails />} />
+      
       <Route element={<Layout />}>
+        <Route path="/dashboard/product/:id" element={<ProductDetails />} />
         <Route path="/dashboard/shop" element={<Shop />} />
+        <Route path="/dashboard/cart" element={<Cart />} />
       </Route>
     </Routes>
 
