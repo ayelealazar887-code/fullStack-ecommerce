@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { useCart } from "../context/Context";
+import { Link } from "react-router-dom";
 
 function Cart() {
-  const { cart } = useCart();
-
+  const { cart, removeFromCart, increaseQuantity, decreaseQuantity } =
+    useCart();
   const subtotal = cart.reduce(
     (total, item) => total + item.price * item.quantity,
-    0
+    0,
   );
 
   if (cart.length === 0) {
@@ -36,22 +37,16 @@ function Cart() {
   return (
     <section className="bg-gray-100 min-h-screen py-12">
       <div className="max-w-7xl mx-auto px-6">
-
-        <h1 className="text-4xl font-bold mb-10">
-          Shopping Cart
-        </h1>
+        <h1 className="text-4xl font-bold mb-10">Shopping Cart</h1>
 
         <div className="grid lg:grid-cols-3 gap-10">
-
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-6">
-
             {cart.map((item) => (
               <div
                 key={item.id}
                 className="bg-white rounded-2xl shadow-sm p-5 flex flex-col md:flex-row gap-6"
               >
-
                 <img
                   src={item.image}
                   alt={item.name}
@@ -59,10 +54,7 @@ function Cart() {
                 />
 
                 <div className="flex-1">
-
-                  <h2 className="text-2xl font-bold">
-                    {item.name}
-                  </h2>
+                  <h2 className="text-2xl font-bold">{item.name}</h2>
 
                   <p className="text-gray-500 mt-2">
                     Beautiful indoor decorative plant.
@@ -73,44 +65,40 @@ function Cart() {
                   </p>
 
                   <div className="flex items-center justify-between mt-6">
-
                     <div className="flex items-center border rounded-lg overflow-hidden">
-
-                      <button className="px-4 py-2 hover:bg-gray-100">
+                      <button
+                        className="px-4 py-2 hover:bg-gray-100"
+                        onClick={() => decreaseQuantity(item.id)}
+                      >
                         -
                       </button>
 
-                      <span className="px-6">
-                        {item.quantity}
-                      </span>
+                      <span className="px-6">{item.quantity}</span>
 
-                      <button className="px-4 py-2 hover:bg-gray-100">
+                      <button
+                        className="px-4 py-2 hover:bg-gray-100"
+                        onClick={() => increaseQuantity(item.id)}
+                      >
                         +
                       </button>
-
                     </div>
 
-                    <button className="text-red-500 hover:text-red-600">
+                    <button
+                      className="text-red-500 hover:text-red-600"
+                      onClick={() => removeFromCart(item.id)}
+                    >
                       <Trash2 size={22} />
                     </button>
-
                   </div>
-
                 </div>
-
               </div>
             ))}
-
           </div>
 
           {/* Summary */}
           <div>
-
             <div className="bg-white rounded-2xl shadow-sm p-8 sticky top-28">
-
-              <h2 className="text-2xl font-bold mb-8">
-                Order Summary
-              </h2>
+              <h2 className="text-2xl font-bold mb-8">Order Summary</h2>
 
               <div className="flex justify-between mb-4 text-gray-600">
                 <span>Items</span>
@@ -131,25 +119,22 @@ function Cart() {
 
               <div className="flex justify-between text-2xl font-bold my-8">
                 <span>Total</span>
-                <span className="text-green-700">
-                  ${subtotal}
-                </span>
+                <span className="text-green-700">${subtotal}</span>
               </div>
 
-              <button className="w-full bg-green-700 text-white py-4 rounded-xl text-lg font-semibold hover:bg-green-800 transition">
+              <Link
+                to="/dashboard/cart/checkout"
+                className="flex items-center justify-center w-full bg-green-700 text-white py-4 rounded-xl text-lg font-semibold hover:bg-green-800 transition duration-300 shadow-md hover:shadow-lg"
+              >
                 Proceed to Checkout
-              </button>
+              </Link>
 
               <button className="w-full mt-4 border border-green-700 text-green-700 py-4 rounded-xl font-semibold hover:bg-green-50 transition">
                 Continue Shopping
               </button>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
     </section>
   );

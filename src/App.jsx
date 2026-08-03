@@ -11,6 +11,7 @@ import ProductDetails from "./components/productDetails";
 import Layout from "./pages/Layout"
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/dashboard/product/:id" element={<ProductDetails />} />
         <Route path="/dashboard/shop" element={<Shop />} />
         <Route path="/dashboard/cart" element={<Cart />} />
+        <Route path="/dashboard/cart/checkout" element={<Checkout />} />
       </Route>
     </Routes>
 
