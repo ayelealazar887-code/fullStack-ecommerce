@@ -11,7 +11,7 @@ import ProductDetails from "./components/productDetails";
 import Layout from "./pages/Layout"
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
-import Checkout from "./pages/CheckOut";
+import Checkout from "./pages/Checkout";
 
 function App() {
   return (
