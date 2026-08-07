@@ -56,6 +56,7 @@ function Checkout() {
                     value={formData.firstName}
                     onChange={handleChange}
                     placeholder="John"
+                    required
                     className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-green-600"
                   />
                 </div>
@@ -69,6 +70,7 @@ function Checkout() {
                     value={formData.lastName}
                     onChange={handleChange}
                     placeholder="Doe"
+                    required
                     className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-green-600"
                   />
                 </div>
@@ -85,6 +87,7 @@ function Checkout() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="+251..."
+                    required
                     className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-green-600"
                   />
                 </div>
@@ -98,6 +101,7 @@ function Checkout() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="john@example.com"
+                    required
                     className="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-green-600"
                   />
                 </div>
@@ -105,7 +109,7 @@ function Checkout() {
 
               {/* Address */}
               <div>
-                <label className="block mb-2 font-medium">Street Address</label>
+                <label className="block mb-2 font-medium">Street Address *</label>
 
                 <input
                   type="text"
@@ -113,6 +117,7 @@ function Checkout() {
                   value={formData.streetAddress1}
                   onChange={handleChange}
                   placeholder="House No / Apartment"
+                  required
                   className="w-full border rounded-lg p-3 mb-3 outline-none focus:ring-2 focus:ring-green-600"
                 />
 

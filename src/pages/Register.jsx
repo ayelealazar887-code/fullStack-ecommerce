@@ -1,57 +1,105 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import API from "../api/axios";
 
 function Register() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const { data } = await API.post("/users/register", formData);
+
+      console.log(data);
+
+      alert("Registration Successful");
+
+    } catch (error) {
+
+      console.log(error.response.data);
+
+      alert(error.response.data.message);
+
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
-        <h2 className="mb-2 text-center text-3xl font-bold text-slate-800">
+    <div className="min-h-screen flex justify-center items-center">
+      <div className="w-[400px] rounded-xl shadow-lg p-8 bg-white">
+
+        <h2 className="text-3xl font-bold text-center mb-2">
           Create Account
         </h2>
 
         <p className="mb-8 text-center text-sm text-slate-500">
-          Join us and start shopping for your favorite plants.
+          Join us and start shopping.
         </p>
 
-        <form className="space-y-5">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5"
+        >
+
           <input
             type="text"
+            name="name"
             placeholder="Full Name"
-            required
-            className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-emerald-600"
+            value={formData.name}
+            onChange={handleChange}
+            className="w-full rounded-lg border px-4 py-3"
           />
 
           <input
             type="email"
-            placeholder="Email Address"
-            required
-            className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-emerald-600"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            className="w-full rounded-lg border px-4 py-3"
           />
 
           <input
             type="password"
+            name="password"
             placeholder="Password"
-            required
-            className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-emerald-600"
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full rounded-lg border px-4 py-3"
           />
 
           <button
             type="submit"
-            className="w-full rounded-lg bg-emerald-600 py-3 font-semibold text-white transition hover:bg-emerald-700"
+            className="w-full rounded-lg bg-emerald-600 py-3 text-white"
           >
             Register
           </button>
+
         </form>
 
-        <p className="mt-6 text-center text-sm text-slate-600">
-          Already registered?{" "}
+        <p className="mt-6 text-center">
+          Already have an account?
+
           <Link
             to="/login"
-            className="font-semibold text-emerald-600 hover:underline"
+            className="text-emerald-600 ml-2"
           >
             Login
           </Link>
+
         </p>
+
       </div>
     </div>
   );

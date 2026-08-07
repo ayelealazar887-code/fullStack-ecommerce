@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Menu, Search, ShoppingBag, User, X } from "lucide-react";
+import {
+  Menu,
+  Search,
+  ShoppingBag,
+  User,
+  X,
+  LogOut,
+} from "lucide-react";
+import API from "../api/axios";
 
 function Navbar() {
   const [openMobile, setMobile] = useState(false);
@@ -15,7 +23,6 @@ function Navbar() {
     { name: "About Us", path: "/about" },
     { name: "Reviews", path: "/testimonials" },
     { name: "Contact Us", path: "/contact" },
-    { name: "Dashboard", path: "/dashboard" },
   ];
 
   const dashboardLinks = [
@@ -33,9 +40,22 @@ function Navbar() {
     setMobile(false);
   };
 
+  const handleLogout = async () => {
+    try {
+      const { data } = await API.post("/users/logout");
+
+      if (data.success) {
+        setMobile(false);
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error.response?.data || error.message);
+    }
+  };
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-emerald-900/20 backdrop-blur-xl border-b border-white/10 shadow-lg">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
+    <nav className="sticky top-0 z-50 bg-emerald-700 shadow-lg">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link
           to={isDashboard ? "/dashboard" : "/"}
@@ -94,6 +114,15 @@ function Navbar() {
               >
                 <User size={18} />
               </Link>
+
+              {/* Logout */}
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 rounded-full bg-red-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-600"
+              >
+                <LogOut size={16} />
+                Logout
+              </button>
             </>
           ) : (
             <Link
@@ -130,7 +159,7 @@ function Navbar() {
 
           {isDashboard ? (
             <>
-              {/* Mobile Search */}
+              {/* Search */}
               <div className="mt-3 flex items-center overflow-hidden rounded-full border border-gray-300">
                 <input
                   type="text"
@@ -151,6 +180,7 @@ function Navbar() {
                 </button>
               </div>
 
+              {/* Cart */}
               <Link
                 to="/dashboard/cart"
                 onClick={() => setMobile(false)}
@@ -160,6 +190,7 @@ function Navbar() {
                 Cart
               </Link>
 
+              {/* Profile */}
               <Link
                 to="/profile"
                 onClick={() => setMobile(false)}
@@ -168,6 +199,15 @@ function Navbar() {
                 <User size={18} />
                 Profile
               </Link>
+
+              {/* Logout */}
+              <button
+                onClick={handleLogout}
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-red-500 py-3 font-medium text-white transition hover:bg-red-600"
+              >
+                <LogOut size={18} />
+                Logout
+              </button>
             </>
           ) : (
             <Link
