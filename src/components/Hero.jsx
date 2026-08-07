@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "./Navbar";
 import p1 from "../assets/p1.jpg"
 import { useLocation } from "react-router-dom";
 import flower from '../assets/flower.jpg'

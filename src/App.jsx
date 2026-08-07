@@ -1,40 +1,39 @@
-import Contact from "./components/Contact"
-import About from "./components/About";
-import Navbar from "./components/Navbar";
-import Testimonies from "./components/Testimonies";
-import Home from "./pages/Home";
 import { Routes, Route } from "react-router-dom";
+
+import Home from "./pages/Home";
+import About from "./components/About";
+import Contact from "./components/Contact";
+import Testimonies from "./components/Testimonies";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+
+import Layout from "./pages/Layout";
 import Dashboard from "./pages/Dashboard";
-import ProductDetails from "./components/productDetails";
-import Layout from "./pages/Layout"
 import Shop from "./pages/Shop";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import ProductDetails from "./components/ProductDetails";
 
 function App() {
   return (
-    <>
-    <Navbar />
     <Routes>
+      {/* Public Routes */}
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/testimonials" element={<Testimonies />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      
-      <Route element={<Layout />}>
-        <Route path="/dashboard/product/:id" element={<ProductDetails />} />
-        <Route path="/dashboard/shop" element={<Shop />} />
-        <Route path="/dashboard/cart" element={<Cart />} />
-        <Route path="/dashboard/cart/checkout" element={<Checkout />} />
+
+      {/* Dashboard Layout */}
+      <Route path="/dashboard" element={<Layout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="shop" element={<Shop />} />
+        <Route path="product/:id" element={<ProductDetails />} />
+        <Route path="cart" element={<Cart />} />
+        <Route path="cart/checkout" element={<Checkout />} />
       </Route>
     </Routes>
-
-    </>
   );
 }
 

@@ -2,11 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
-import authRouter from "./routes/authRouter.js";
 import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
 import dns from 'dns';
 import userRouter from "./routes/userRoute.js";
+import productRouter from "./routes/productRoute.js";
 
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 dotenv.config();
@@ -22,8 +22,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Route
-app.use('/api/auth', authRouter)
 app.use('/api/users', userRouter)
+app.use('/api/products', productRouter)
 
 
 connectDB();
