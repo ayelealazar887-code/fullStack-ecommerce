@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useCart } from "../context/Context";
+import API from "../api/axios";
 
 
 function Checkout() {
@@ -20,18 +21,64 @@ function Checkout() {
   });
 
   const handleChange = (e) => {
-    const {name, value, type, checked } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (formData.payment === "card") {
+    await handlePaystackPayment();
+    return;
   }
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form Data:", formData);
+
+  if (formData.payment === "cash") {
+    console.log("Cash on delivery");
+    return;
   }
+
+  if (formData.payment === "chapa") {
+    console.log("Chapa selected");
+    return;
+  }
+
+  if (formData.payment === "telebirr") {
+    console.log("Telebirr selected");
+    return;
+  }
+};
+
+  const handlePaystackPayment = async () => {
+  try {
+    const { data } = await API.post(
+      "/payment/initialize",
+      {
+        email: formData.email,
+        amount: subtotal,
+      }
+    );
+
+    if (data.success) {
+      window.location.href =
+        data.authorization_url;
+    }
+  } catch (error) {
+    console.log(
+      error.response?.data || error.message
+    );
+
+    alert(
+      error.response?.data?.message ||
+      "Unable to initialize payment"
+    );
+  }
+};
+
   const subtotal = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) => total + item.product.price * item.quantity,
     0,
   );
   return (
@@ -109,7 +156,9 @@ function Checkout() {
 
               {/* Address */}
               <div>
-                <label className="block mb-2 font-medium">Street Address *</label>
+                <label className="block mb-2 font-medium">
+                  Street Address *
+                </label>
 
                 <input
                   type="text"
@@ -246,7 +295,10 @@ function Checkout() {
                     Cash on Delivery
                   </label>
                 </div>
-                <button type="submit" className="w-full mt-6 bg-red-700 hover:bg-red-800 transition text-white py-4 rounded-xl text-lg font-semibold">
+                <button
+                  type="submit"
+                  className="w-full mt-6 bg-red-700 hover:bg-red-800 transition text-white py-4 rounded-xl text-lg font-semibold"
+                >
                   Place Order
                 </button>
               </div>
@@ -259,15 +311,17 @@ function Checkout() {
               <h2 className="text-2xl font-bold mb-8">Order Summary</h2>
 
               <div className="space-y-5">
-                <div className="flex justify-between">
-                  <span>Snake Plant × 2</span>
-                  <span>$50</span>
-                </div>
+                {cart.map((item) => (
+                  <div key={item.product._id} className="flex justify-between">
+                    <span>
+                      {item.product.name} × {item.quantity}
+                    </span>
 
-                <div className="flex justify-between">
-                  <span>Monstera × 1</span>
-                  <span>$35</span>
-                </div>
+                    <span>
+                      ${(Number(item.product.price) * item.quantity).toFixed(2)}
+                    </span>
+                  </div>
+                ))}
 
                 <hr />
 
@@ -293,8 +347,6 @@ function Checkout() {
 
                   <span className="text-green-700">${subtotal}</span>
                 </div>
-
-                
 
                 <p className="text-sm text-gray-500 text-center leading-6">
                   By placing your order, you agree to our Terms & Conditions and
