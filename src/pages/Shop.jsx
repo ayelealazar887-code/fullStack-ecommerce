@@ -1,11 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Feature from "../components/Feature";
-import { featuredProducts } from "../assets/data/data";
 import eco from "../assets/eco.jpg";
 import { useSearchParams, Link } from "react-router-dom";
+import API from "../api/axios";
 
 
 function Shop() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const { data } = await API.get("/products");
+
+      if (data.success) {
+        setProducts(data.products);
+      } else {
+        setError("Failed to load products.");
+      }
+    } catch (error) {
+      setError(
+        error.response?.data?.message ||
+          "Unable to connect to the server."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProducts();
+}, []);
+
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -14,7 +42,7 @@ function Shop() {
 
   const search = searchParams.get("search") || "";
 
-  const filteredProducts = featuredProducts.filter((item) =>
+  const filteredProducts = products.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase()),
   );
 
@@ -24,6 +52,34 @@ function Shop() {
     indexOfFirstItem,
     indexOfLastItem,
   );
+
+if (loading) {
+  return (
+    <div className="flex h-screen flex-col items-center justify-center gap-4">
+      <div className="h-12 w-12 animate-spin rounded-full border-4 border-green-600 border-t-transparent"></div>
+
+      <p className="text-lg font-medium text-gray-700">
+        Loading products...
+      </p>
+    </div>
+  );
+}
+if (error) {
+  return (
+    <div className="flex h-screen flex-col items-center justify-center gap-4">
+      <p className="text-xl font-semibold text-red-600">
+        {error}
+      </p>
+
+      <button
+        onClick={() => window.location.reload()}
+        className="rounded bg-green-700 px-5 py-2 text-white hover:bg-green-800"
+      >
+        Try Again
+      </button>
+    </div>
+  );
+}
 
   return (
     <div className="flex flex-col lg:flex-row gap-8 mt-10">
@@ -55,7 +111,7 @@ function Shop() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {currentProducts.map((item) => (
             <div
-              key={item.id}
+              key={item._id}
               className="bg-white rounded-xl shadow overflow-hidden"
             >
               <img
@@ -70,7 +126,7 @@ function Shop() {
   <p className="my-2 text-gray-600">${item.price}</p>
 
   <Link
-    to={`/dashboard/product/${item.id}`}
+    to={`/dashboard/product/${item._id}`}
     className="block w-full rounded bg-green-700 py-2 text-center text-white hover:bg-green-800"
   >
     Buy
