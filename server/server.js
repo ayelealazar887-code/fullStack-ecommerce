@@ -9,6 +9,7 @@ import userRouter from "./routes/userRoute.js";
 import productRouter from "./routes/productRoute.js";
 import cartRouter from "./routes/cartRoute.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 dotenv.config();
@@ -28,6 +29,7 @@ app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)
 app.use("/api/cart", cartRouter);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/orders", orderRoutes);
 
 
 connectDB();

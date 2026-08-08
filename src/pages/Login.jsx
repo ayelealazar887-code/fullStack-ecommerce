@@ -1,25 +1,34 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import API from "../api/axios.js";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 function Login() {
-  
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+
+    // Clear error when user starts typing again
+    if (error) {
+      setError("");
+    }
   };
 
-    const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Clear previous error
+    setError("");
 
     try {
       const { data } = await API.post("/users/login", formData);
@@ -27,26 +36,39 @@ function Login() {
       if (data.success) {
         navigate("/dashboard");
       } else {
-        alert(data.message);
+        setError(data.message || "Invalid email or password.");
       }
-
     } catch (error) {
-
       console.log(error);
 
+      if (error.response?.status === 401) {
+        setError("Invalid email or password.");
+      } else {
+        setError(
+          error.response?.data?.message ||
+            "Something went wrong. Please try again."
+        );
+      }
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
-        <h2 className="mb-2 text-center text-3xl font-bold text-slate-800">
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-md p-8">
+        <h1 className="text-3xl font-bold text-center text-slate-800">
           Welcome Back
-        </h2>
+        </h1>
 
-        <p className="mb-8 text-center text-sm text-slate-500">
+        <p className="mb-8 mt-2 text-center text-sm text-slate-500">
           Sign in to continue shopping for your favorite plants.
         </p>
+
+        {/* Error Message */}
+        {error && (
+          <div className="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <input
@@ -56,7 +78,7 @@ function Login() {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-emerald-600"
+            className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
           />
 
           <input
@@ -66,7 +88,7 @@ function Login() {
             value={formData.password}
             onChange={handleChange}
             required
-            className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-emerald-600"
+            className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none transition focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600"
           />
 
           <button

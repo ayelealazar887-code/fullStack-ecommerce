@@ -51,28 +51,89 @@ function Checkout() {
   }
 };
 
-  const handlePaystackPayment = async () => {
+ const handlePaystackPayment = async () => {
   try {
-    const { data } = await API.post(
+    console.log("CART:", cart);
+    console.log("SUBTOTAL:", subtotal);
+
+    const orderItems = cart.map((item) => ({
+      product: item.product._id,
+      name: item.product.name,
+      price: Number(item.product.price),
+      quantity: item.quantity,
+    }));
+
+    const orderData = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      phone: formData.phone,
+      email: formData.email,
+
+      streetAddress1: formData.streetAddress1,
+      streetAddress2: formData.streetAddress2,
+      city: formData.city,
+      state: formData.state,
+      zipCode: formData.zipCode,
+
+      notes: formData.notes,
+
+      payment: formData.payment,
+
+      items: orderItems,
+
+      totalAmount: subtotal,
+    };
+
+    console.log("SENDING ORDER:", orderData);
+
+    // Create order in MongoDB
+    const orderResponse = await API.post(
+      "/orders",
+      orderData
+    );
+
+    console.log("ORDER RESPONSE:", orderResponse.data);
+
+    if (!orderResponse.data.success) {
+      alert("Could not create order");
+      return;
+    }
+
+    const order = orderResponse.data.order;
+
+    console.log("ORDER CREATED:", order);
+
+    // Initialize Paystack
+    const paymentResponse = await API.post(
       "/payment/initialize",
       {
         email: formData.email,
         amount: subtotal,
+        orderId: order._id,
       }
     );
 
-    if (data.success) {
-      window.location.href =
-        data.authorization_url;
-    }
-  } catch (error) {
     console.log(
-      error.response?.data || error.message
+      "PAYMENT RESPONSE:",
+      paymentResponse.data
+    );
+
+    if (paymentResponse.data.success) {
+      window.location.href =
+        paymentResponse.data.authorization_url;
+    }
+
+  } catch (error) {
+    console.error("CHECKOUT ERROR:", error);
+
+    console.log(
+      "SERVER RESPONSE:",
+      error.response?.data
     );
 
     alert(
       error.response?.data?.message ||
-      "Unable to initialize payment"
+        "Unable to process order"
     );
   }
 };
@@ -260,39 +321,6 @@ function Checkout() {
                       onChange={handleChange}
                     />
                     Credit / Debit Card
-                  </label>
-
-                  <label className="flex items-center gap-3">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="chapa"
-                      checked={formData.payment === "chapa"}
-                      onChange={handleChange}
-                    />
-                    Chapa
-                  </label>
-
-                  <label className="flex items-center gap-3">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="telebirr"
-                      checked={formData.payment === "telebirr"}
-                      onChange={handleChange}
-                    />
-                    Telebirr
-                  </label>
-
-                  <label className="flex items-center gap-3">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="cash"
-                      checked={formData.payment === "cash"}
-                      onChange={handleChange}
-                    />
-                    Cash on Delivery
                   </label>
                 </div>
                 <button

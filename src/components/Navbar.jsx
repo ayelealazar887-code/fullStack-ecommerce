@@ -107,13 +107,7 @@ function Navbar() {
                 <ShoppingBag size={18} />
               </Link>
 
-              {/* Profile */}
-              <Link
-                to="/profile"
-                className="rounded-full bg-white p-2 text-emerald-700 transition hover:bg-emerald-100"
-              >
-                <User size={18} />
-              </Link>
+              
 
               {/* Logout */}
               <button

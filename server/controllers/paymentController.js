@@ -1,4 +1,7 @@
 import axios from "axios";
+import Order from "../models/Order.js";
+import Cart from "../models/Cart.js";
+
 
 export const initializePayment = async (req, res) => {
   try {
@@ -61,48 +64,90 @@ export const verifyPayment = async (req, res) => {
   try {
     const { reference } = req.params;
 
-    if (!reference) {
-      return res.status(400).json({
-        success: false,
-        message: "Payment reference is required",
-      });
-    }
-
     const response = await axios.get(
       `https://api.paystack.co/transaction/verify/${reference}`,
       {
         headers: {
-          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+          Authorization:
+            `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
         },
       }
     );
 
     const payment = response.data.data;
 
+    // Make sure Paystack says payment was successful
     if (payment.status !== "success") {
       return res.status(400).json({
         success: false,
         message: "Payment was not successful",
-        status: payment.status,
       });
     }
 
-    res.json({
+    // Get user's cart
+    const cart = await Cart.findOne({
+      user: req.user._id,
+    }).populate("items.product");
+
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Cart is empty",
+      });
+    }
+
+    // Create order items
+    const orderItems = cart.items.map((item) => ({
+      product: item.product._id,
+      name: item.product.name,
+      price: item.product.price,
+      image: item.product.image,
+      quantity: item.quantity,
+    }));
+
+    // Calculate total from database products
+    const totalAmount = cart.items.reduce(
+      (total, item) =>
+        total +
+        Number(item.product.price) * item.quantity,
+      0
+    );
+
+    // Create order
+    const order = await Order.create({
+      user: req.user._id,
+
+      items: orderItems,
+
+      totalAmount,
+
+      paymentMethod: "card",
+
+      paymentStatus: "paid",
+
+      orderStatus: "processing",
+
+      paymentReference: reference,
+    });
+
+    // Clear cart
+    cart.items = [];
+    await cart.save();
+
+    return res.json({
       success: true,
-      message: "Payment verified successfully",
-      payment,
+      message: "Payment verified and order created",
+      order,
     });
   } catch (error) {
     console.error(
-      "Payment verification error:",
+      "Verify payment error:",
       error.response?.data || error.message
     );
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message:
-        error.response?.data?.message ||
-        "Payment verification failed",
+      message: "Unable to verify payment",
     });
   }
 };
