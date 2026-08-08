@@ -7,7 +7,7 @@ function Cart() {
   const { cart, removeFromCart, increaseQuantity, decreaseQuantity } =
     useCart();
   const subtotal = cart.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) => total + item.product.price * item.quantity,
     0,
   );
 
@@ -44,31 +44,31 @@ function Cart() {
           <div className="lg:col-span-2 space-y-6">
             {cart.map((item) => (
               <div
-                key={item.id}
+                key={item.product._id}
                 className="bg-white rounded-2xl shadow-sm p-5 flex flex-col md:flex-row gap-6"
               >
                 <img
-                  src={item.image}
-                  alt={item.name}
+                  src={item.product.image}
+                  alt={item.product.name}
                   className="w-full md:w-44 h-44 object-cover rounded-xl"
                 />
 
                 <div className="flex-1">
-                  <h2 className="text-2xl font-bold">{item.name}</h2>
+                  <h2 className="text-2xl font-bold">{item.product.name}</h2>
 
                   <p className="text-gray-500 mt-2">
                     Beautiful indoor decorative plant.
                   </p>
 
                   <p className="text-3xl text-green-700 font-bold mt-4">
-                    ${item.price}
+                    ${item.product.price}
                   </p>
 
                   <div className="flex items-center justify-between mt-6">
                     <div className="flex items-center border rounded-lg overflow-hidden">
                       <button
                         className="px-4 py-2 hover:bg-gray-100"
-                        onClick={() => decreaseQuantity(item.id)}
+                        onClick={() => decreaseQuantity(item.product._id)}
                       >
                         -
                       </button>
@@ -77,7 +77,7 @@ function Cart() {
 
                       <button
                         className="px-4 py-2 hover:bg-gray-100"
-                        onClick={() => increaseQuantity(item.id)}
+                        onClick={() => increaseQuantity(item.product._id)}
                       >
                         +
                       </button>
@@ -85,7 +85,7 @@ function Cart() {
 
                     <button
                       className="text-red-500 hover:text-red-600"
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() => removeFromCart(item.product._id)}
                     >
                       <Trash2 size={22} />
                     </button>

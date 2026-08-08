@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import dns from 'dns';
 import userRouter from "./routes/userRoute.js";
 import productRouter from "./routes/productRoute.js";
+import cartRouter from "./routes/cartRoute.js";
 
 dns.setServers(['8.8.8.8', '1.1.1.1']);
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(cookieParser());
 // Route
 app.use('/api/users', userRouter)
 app.use('/api/products', productRouter)
+app.use("/api/cart", cartRouter);
 
 
 connectDB();

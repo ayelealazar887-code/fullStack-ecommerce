@@ -1,18 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { featuredProducts } from "../assets/data/data";
 import { useCart } from "../context/Context";
+import API from "../api/axios";
+
 
 function ProductDetails() {
   const { id } = useParams();
+
   const [quantity, setQuantity] = useState(1);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const { data } = await API.get(`/products/${id}`);
+
+        if (data.success) {
+          setProduct(data.product);
+          console.log(data.product);
+        } else {
+          setError("Product not found");
+        }
+      } catch (error) {
+        console.log(error.response?.data || error.message);
+
+        setError(error.response?.data?.message || "Unable to load product.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
-  const product = featuredProducts.find((item) => item.id === Number(id));
+  if (loading) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center gap-4">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-green-600 border-t-transparent"></div>
+
+        <p className="text-lg font-medium text-gray-700">Loading product...</p>
+      </div>
+    );
+  }
+
+  // Error
+  if (error) {
+    return (
+      <div className="flex h-screen flex-col items-center justify-center gap-4">
+        <p className="text-xl font-semibold text-red-600">{error}</p>
+
+        <button
+          onClick={() => navigate("/dashboard/shop")}
+          className="rounded-lg bg-green-700 px-5 py-2 text-white hover:bg-green-800"
+        >
+          Back to Shop
+        </button>
+      </div>
+    );
+  }
 
   if (!product) {
-    return <div className="pt-32 text-center text-2xl">Product Not Found</div>;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p className="text-xl font-semibold">Product Not Found</p>
+      </div>
+    );
   }
 
   return (

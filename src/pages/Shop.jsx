@@ -126,7 +126,7 @@ if (error) {
   <p className="my-2 text-gray-600">${item.price}</p>
 
   <Link
-    to={`/dashboard/product/${item.id}`}
+    to={`/dashboard/product/${item._id}`}
     className="block w-full rounded bg-green-700 py-2 text-center text-white hover:bg-green-800"
   >
     Buy
